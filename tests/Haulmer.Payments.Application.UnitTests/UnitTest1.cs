@@ -1,4 +1,4 @@
-namespace Haulmer.Payments.UnitTests;
+namespace Haulmer.Payments.Application.UnitTests;
 
 public class UnitTest1
 {

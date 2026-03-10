@@ -22,9 +22,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Haulmer.Payments.Application\Haulmer.Payments.Application.csproj" />
-    <ProjectReference Include="..\..\src\Haulmer.Payments.Domain\Haulmer.Payments.Domain.csproj" />
-  </ItemGroup>
-
 </Project>
