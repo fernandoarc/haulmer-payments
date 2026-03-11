@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haulmer.Payments.Domain.Uni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haulmer.Payments.Application.UnitTests", "tests\Haulmer.Payments.Application.UnitTests\Haulmer.Payments.Application.UnitTests.csproj", "{2FBFA609-11BB-4EB7-BBD8-DB08D1E60FA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Haulmer.Payments.Infrastructure.IntegrationTests", "tests\Haulmer.Payments.Infrastructure.IntegrationTests\Haulmer.Payments.Infrastructure.IntegrationTests.csproj", "{57DC4C2E-EE60-4CC5-BF32-6B369080EAAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{2FBFA609-11BB-4EB7-BBD8-DB08D1E60FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FBFA609-11BB-4EB7-BBD8-DB08D1E60FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FBFA609-11BB-4EB7-BBD8-DB08D1E60FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57DC4C2E-EE60-4CC5-BF32-6B369080EAAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57DC4C2E-EE60-4CC5-BF32-6B369080EAAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57DC4C2E-EE60-4CC5-BF32-6B369080EAAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57DC4C2E-EE60-4CC5-BF32-6B369080EAAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{388FF85E-7531-474D-9D66-054ECF2AC730} = {29D721E5-A8A6-4B01-8363-61484F44DE74}
@@ -60,5 +66,6 @@ Global
 		{01A530DE-8B12-4475-AF3A-F33FF97233FC} = {29D721E5-A8A6-4B01-8363-61484F44DE74}
 		{98C00FB5-C205-4D12-A39F-D1886ADD966B} = {5E65C2E1-3B9D-43A9-A766-367F1BD99F14}
 		{2FBFA609-11BB-4EB7-BBD8-DB08D1E60FA6} = {5E65C2E1-3B9D-43A9-A766-367F1BD99F14}
+		{57DC4C2E-EE60-4CC5-BF32-6B369080EAAC} = {5E65C2E1-3B9D-43A9-A766-367F1BD99F14}
 	EndGlobalSection
 EndGlobal
