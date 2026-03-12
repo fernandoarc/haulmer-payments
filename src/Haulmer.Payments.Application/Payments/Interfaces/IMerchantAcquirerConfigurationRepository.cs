@@ -4,7 +4,7 @@ namespace Haulmer.Payments.Application.Payments.Interfaces;
 
 public interface IMerchantAcquirerConfigurationRepository
 {
-    Task<MerchantAcquirerConfiguration> GetActiveByMerchantAndPaymentDetailsAsync(
+    Task<MerchantAcquirerConfiguration?> GetActiveByMerchantAndPaymentDetailsAsync(
         long merchantId,
         long paymentMethodId,
         long paymentChannelId,

@@ -4,5 +4,5 @@ namespace Haulmer.Payments.Application.Payments.Interfaces;
 
 public interface IMerchantBranchRepository
 {
-    Task<MerchantBranch> GetByIdAsync(long merchantBranchId, CancellationToken cancellationToken);
+    Task<MerchantBranch?> GetByIdAsync(long merchantBranchId, CancellationToken cancellationToken);
 }
