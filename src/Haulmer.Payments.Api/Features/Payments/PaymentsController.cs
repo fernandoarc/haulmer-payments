@@ -1,7 +1,12 @@
 using FluentValidation;
 using Haulmer.Payments.Api.Features.Payments.CreatePayment;
+using Haulmer.Payments.Api.Features.Payments.GetPaymentById;
 using Haulmer.Payments.Api.Features.Payments.Mappings;
+using Haulmer.Payments.Api.Features.Payments.SearchPayments;
 using Haulmer.Payments.Application.Payments.Commands.CreatePayment;
+using Haulmer.Payments.Application.Payments.Queries.GetPaymentById;
+using Haulmer.Payments.Application.Payments.Queries.SearchPayments;
+using Haulmer.Payments.Domain.Payments;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Haulmer.Payments.Api.Features.Payments;
@@ -12,13 +17,19 @@ public class PaymentsController : ControllerBase
 {
     private readonly CreatePaymentCommandHandler _createPaymentCommandHandler;
     private readonly IValidator<CreatePaymentCommand> _createPaymentCommandValidator;
+    private readonly GetPaymentByIdQueryHandler _getPaymentByIdQueryHandler;
+    private readonly SearchPaymentsQueryHandler _searchPaymentsQueryHandler;
 
     public PaymentsController(
         CreatePaymentCommandHandler createPaymentCommandHandler,
-        IValidator<CreatePaymentCommand> createPaymentCommandValidator)
+        IValidator<CreatePaymentCommand> createPaymentCommandValidator,
+        GetPaymentByIdQueryHandler getPaymentByIdQueryHandler,
+        SearchPaymentsQueryHandler searchPaymentsQueryHandler)
     {
         _createPaymentCommandHandler = createPaymentCommandHandler;
         _createPaymentCommandValidator = createPaymentCommandValidator;
+        _getPaymentByIdQueryHandler = getPaymentByIdQueryHandler;
+        _searchPaymentsQueryHandler = searchPaymentsQueryHandler;
     }
 
     [HttpPost]
@@ -55,15 +66,73 @@ public class PaymentsController : ControllerBase
     }
 
     [HttpGet("{transactionId:long}")]
-    public IActionResult GetById(long transactionId)
+    [ProducesResponseType(typeof(GetPaymentByIdResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(long transactionId, CancellationToken cancellationToken)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var query = new GetPaymentByIdQuery
+        {
+            TransactionId = transactionId
+        };
+
+        var result = await _getPaymentByIdQueryHandler.HandleAsync(query, cancellationToken);
+        if (result is null)
+            return NotFound();
+
+        var response = result.ToGetPaymentByIdResponse();
+        return Ok(response);
     }
 
     [HttpGet]
-    public IActionResult Search([FromQuery(Name = "merchant_id")] long? merchantId, [FromQuery] string? status)
+    [ProducesResponseType(typeof(SearchPaymentsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Search([FromQuery] SearchPaymentsRequest request, CancellationToken cancellationToken)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        if (!TryParseStatus(request.Status, out var parsedStatus))
+        {
+            return BadRequest(new
+            {
+                Message = "Invalid status value. Allowed values: Pending, Processing, Approved, Declined, Failed."
+            });
+        }
+
+        var query = new SearchPaymentsQuery
+        {
+            MerchantId = request.MerchantId,
+            Status = parsedStatus
+        };
+
+        try
+        {
+            var result = await _searchPaymentsQueryHandler.HandleAsync(query, cancellationToken);
+            var response = result.ToSearchPaymentsResponse();
+            return Ok(response);
+        }
+        catch (ArgumentException ex) when (ex.ParamName == nameof(SearchPaymentsQuery.MerchantId))
+        {
+            return BadRequest(new
+            {
+                Message = ex.Message
+            });
+        }
+    }
+
+    private static bool TryParseStatus(string? rawStatus, out PaymentTransactionStatus? status)
+    {
+        status = null;
+
+        if (string.IsNullOrWhiteSpace(rawStatus))
+            return true;
+
+        var statusValue = rawStatus.Trim();
+        var allowedStatusNames = Enum.GetNames<PaymentTransactionStatus>();
+
+        if (!allowedStatusNames.Contains(statusValue, StringComparer.OrdinalIgnoreCase))
+            return false;
+
+        return Enum.TryParse<PaymentTransactionStatus>(statusValue, ignoreCase: true, out var parsedStatus)
+            ? (status = parsedStatus) is not null
+            : false;
     }
 
     private Guid GetCorrelationId()
