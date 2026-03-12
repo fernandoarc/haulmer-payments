@@ -1,29 +1,33 @@
+using Haulmer.Payments.Api.Extensions;
+using Haulmer.Payments.Api.Middlewares;
+using Haulmer.Payments.Application.DependencyInjection;
+using Haulmer.Payments.Infrastructure.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Service registration
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); // Registered via extension below
+builder.Services.AddSwaggerDocumentation();
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApiAuthentication(builder.Configuration);
 builder.Services.AddApiAuthorization();
-builder.Services.AddSwaggerExtensions();
 
 var app = builder.Build();
 
-// Middleware pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerDocumentation();
 }
 
-app.UseMiddleware<Haulmer.Payments.Api.Middlewares.CorrelationIdMiddleware>();
-app.UseMiddleware<Haulmer.Payments.Api.Middlewares.ExceptionHandlingMiddleware>();
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
