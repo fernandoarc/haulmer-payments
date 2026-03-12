@@ -4,7 +4,7 @@ namespace Haulmer.Payments.Application.Payments.Interfaces;
 
 public interface IMerchantPricingRepository
 {
-    Task<MerchantPricing> GetActiveByMerchantAndPaymentDetailsAsync(
+    Task<MerchantPricing?> GetActiveByMerchantAndPaymentDetailsAsync(
         long merchantId,
         long paymentMethodId,
         long paymentChannelId,

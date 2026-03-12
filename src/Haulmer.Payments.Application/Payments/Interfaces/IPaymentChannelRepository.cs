@@ -4,5 +4,5 @@ namespace Haulmer.Payments.Application.Payments.Interfaces;
 
 public interface IPaymentChannelRepository
 {
-    Task<PaymentChannel> GetByIdAsync(long paymentChannelId, CancellationToken cancellationToken);
+    Task<PaymentChannel?> GetByIdAsync(long paymentChannelId, CancellationToken cancellationToken);
 }
