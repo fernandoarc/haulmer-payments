@@ -1,4 +1,5 @@
 using Haulmer.Payments.Infrastructure.Persistence;
+using Haulmer.Payments.Infrastructure.Persistence.Queries;
 using Haulmer.Payments.Infrastructure.Persistence.Repositories;
 using Haulmer.Payments.Infrastructure.ExternalServices.BankAuthorization;
 using Haulmer.Payments.Application.Payments.Interfaces;
@@ -33,8 +34,10 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<IPaymentIdempotencyRepository, PaymentIdempotencyRepository>();
         services.AddScoped<IPaymentTraceLogRepository, PaymentTraceLogRepository>();
         services.AddScoped<IPaymentRequestRepository, PaymentRequestRepository>();
+        services.AddScoped<IPaymentQueryService, PaymentQueryService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IBankTransactionAuthorizationService, SimulatedBankTransactionAuthorizationService>();
+        services.AddScoped<IPaymentQueryService, PaymentQueryService>();
 
         return services;
     }
