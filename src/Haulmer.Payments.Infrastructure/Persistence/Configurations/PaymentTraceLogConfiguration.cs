@@ -35,8 +35,7 @@ public class PaymentTraceLogConfiguration : IEntityTypeConfiguration<PaymentTrac
             .IsRequired()
             .HasMaxLength(500);
 
-        builder.Property(x => x.EventDataJson)
-            .HasColumnType("nvarchar(max)");
+        builder.Property(x => x.EventDataJson);
 
         builder.Property(x => x.Severity)
             .IsRequired()

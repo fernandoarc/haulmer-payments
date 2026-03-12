@@ -23,8 +23,7 @@ public class PaymentRequestConfiguration : IEntityTypeConfiguration<PaymentReque
             .IsRequired();
 
         builder.Property(x => x.RequestPayloadJson)
-            .IsRequired()
-            .HasColumnType("nvarchar(max)");
+            .IsRequired();
 
         builder.Property(x => x.RequestHash)
             .IsRequired()
